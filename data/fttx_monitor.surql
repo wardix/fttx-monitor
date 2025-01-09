@@ -1,0 +1,10 @@
+DEFINE TABLE fttx_rx_power SCHEMAFULL;
+DEFINE FIELD synced_at ON TABLE fttx_rx_power TYPE datetime DEFAULT time::now();
+DEFINE FIELD executed_at ON TABLE fttx_rx_power TYPE datetime DEFAULT d'1970-01-01T00:00:00Z';
+DEFINE FIELD output ON TABLE fttx_rx_power TYPE option<float> DEFAULT NONE;
+DEFINE FIELD error ON TABLE fttx_rx_power TYPE option<string> DEFAULT NONE;
+DEFINE FIELD suspended_at ON TABLE fttx_rx_power TYPE datetime DEFAULT d'1970-01-01T00:00:00Z';
+DEFINE FIELD suspended_period ON TABLE fttx_rx_power TYPE int DEFAULT 0;
+DEFINE FIELD created_at ON TABLE fttx_rx_power TYPE datetime DEFAULT time::now();
+DEFINE FIELD updated_at ON TABLE fttx_rx_power TYPE datetime DEFAULT time::now();
+DEFINE FIELD deleted_at ON TABLE fttx_rx_power TYPE option<datetime> DEFAULT NONE;

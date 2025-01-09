@@ -1,0 +1,20 @@
+{
+  "name": "fttx-monitor",
+  "module": "src/agent.ts",
+  "type": "module",
+  "scripts": {
+    "dev_agent": "bun run --hot src/agent.ts",
+    "dev_exporter": "bun run --hot src/exporter.ts",
+    "build_agent": "bun build --minify --outfile dist/agent.js --target bun src/agent.ts",
+    "build_exporter": "bun build --minify --outfile dist/exporter.js --target bun src/exporter.ts"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "mysql2": "^3.12.0",
+    "surrealdb": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.16",
+    "typescript": "^5.7.3"
+  }
+}
