@@ -1,5 +1,5 @@
 export const SURREALDB_URL =
-  process.env.SURREALDB_URL || 'http://localhost:8000/rpc'
+  process.env.SURREALDB_URL || 'ws://localhost:8000/rpc'
 export const SURREALDB_NAMESPACE = process.env.SURREALDB_NAMESPACE || 'nis'
 export const SURREALDB_DATABASE = process.env.SURREALDB_DATABASE || 'nis'
 export const SURREALDB_USERNAME = process.env.SURREALDB_USERNAME || 'root'
