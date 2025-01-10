@@ -1,3 +1,6 @@
+export const PORT = Number(process.env.PORT || 3001)
+export const BASIC_USERS = process.env.BASIC_USERS || '["nis:secret"]'
+
 export const SURREALDB_URL =
   process.env.SURREALDB_URL || 'ws://localhost:8000/rpc'
 export const SURREALDB_NAMESPACE = process.env.SURREALDB_NAMESPACE || 'nis'
