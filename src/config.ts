@@ -15,6 +15,7 @@ export const CONCURRENT_LIMIT = Number(process.env.CONCURRENT_LIMIT || 1)
 export const PERIOD_SYNC = Number(process.env.PERIOD_SYNC || 14400)
 export const PERIOD_SUSPEND = Number(process.env.PERIOD_SUSPEND || 14400)
 export const PERIOD_CACHE = Number(process.env.PERIOD_CACHE || 7200)
+export const PERIOD_GRACE = Number(process.env.PERIOD_GRACE || 3600)
 
 export const BACKOFF_MIN = Number(process.env.BACKOFF_MIN || 1000)
 export const BACKOFF_MAX = Number(process.env.BACKOFF_MAX || 960000)

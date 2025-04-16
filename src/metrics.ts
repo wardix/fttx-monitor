@@ -1,4 +1,4 @@
-import { PERIOD_CACHE, PERIOD_SYNC } from './config'
+import { PERIOD_CACHE, PERIOD_GRACE, PERIOD_SYNC } from './config'
 import { initDb } from './surreal'
 
 export async function getMetrics() {
@@ -16,7 +16,7 @@ export async function getMetrics() {
       'SELECT id, output FROM fttx_rx_power',
       'WHERE deleted_at IS NONE', // not deleted
       'AND NOT(output IS NONE)', // has output
-      `AND (time::unix(executed_at) + ${PERIOD_CACHE}) > ${now}`, // recently executed
+      `AND (time::unix(executed_at) + ${PERIOD_CACHE + PERIOD_GRACE}) > ${now}`,
       `AND (time::unix(synced_at) + ${PERIOD_SYNC}) > ${now}`, // not out of sync
       `AND (time::unix(suspended_at) + suspended_period) < ${now}`, // not suspended
     ].join(' '),
