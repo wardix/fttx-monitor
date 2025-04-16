@@ -84,6 +84,17 @@ async function main() {
 async function processRecord(record: FttxRxPowerRecord, db: Surreal) {
   const cid = record.id.id
   const now = new Date()
+  const nowStr = Intl.DateTimeFormat('en-CA', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+    .format(now)
+    .replace(', ', ' ')
 
   const params = {
     customerID: cid,
@@ -104,21 +115,21 @@ async function processRecord(record: FttxRxPowerRecord, db: Surreal) {
     if (!data.result) {
       if (data.status) {
         await updateRecordOnError(db, cid, now, data.status)
-        console.warn(`CID ${cid}: ${data.status}`)
+        console.warn(`${nowStr} ${cid}: ${data.status}`)
         return
       }
-      console.warn(`CID ${cid}:`, data)
+      console.warn(`${nowStr} ${cid}:`, data)
       return
     }
 
     const commandReturn = data.result[0]?.command_return
     if (commandReturn === undefined) {
-      console.warn(`CID ${cid}:`, data.result)
+      console.warn(`${nowStr} ${cid}:`, data.result)
       return
     }
 
     if (!commandReturn.endsWith('(dbm)')) {
-      console.warn(`CID ${cid}: "${commandReturn}"`)
+      console.warn(`${nowStr} ${cid}: "${commandReturn}"`)
       await updateRecordOnError(db, cid, now, commandReturn)
       return
     }
@@ -131,7 +142,7 @@ async function processRecord(record: FttxRxPowerRecord, db: Surreal) {
       return
     }
 
-    console.log(`CID ${cid}: ${commandReturn}`)
+    console.log(`${nowStr} ${cid}: ${commandReturn}`)
     await db.merge(new RecordId('fttx_rx_power', cid), {
       executed_at: now,
       updated_at: now,
@@ -165,21 +176,35 @@ async function handleAxiosError(
   cid: string,
   now: Date,
 ) {
+  const nowStr = Intl.DateTimeFormat('en-CA', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+    .format(now)
+    .replace(', ', ' ')
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError
     if (axiosError.response?.status === 504) {
-      console.warn(`CID ${cid}: Gateway Timeout -`, axiosError.response.data)
+      console.warn(
+        `${nowStr} ${cid}: Gateway Timeout -`,
+        axiosError.response.data,
+      )
       await db.merge(new RecordId('fttx_rx_power', cid), {
         suspended_at: now,
         updated_at: now,
         suspended_period: 0,
       })
     } else {
-      console.error(`CID ${cid}: Axios error -`, axiosError.message)
+      console.error(`${nowStr} ${cid}: Axios error -`, axiosError.message)
       // Optionally, update the record with the error status/message
     }
   } else {
-    console.error(`CID ${cid}: Unexpected error -`, error)
+    console.error(`${nowStr} ${cid}: Unexpected error -`, error)
     // Optionally, update the record with a generic error status
   }
 }
